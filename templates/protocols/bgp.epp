@@ -1,0 +1,13 @@
+<%- |
+  String[1] $name,
+  Integer[1] $local_as,
+  Stdlib::Compat::Ipv4 $remote_ip,
+  Optional[Stdlib::Compat::Ipv4] $update_source,
+  Optional[Integer[1]] $remote_as,
+  Optional[Integer[1, 65535]] $remote_port,
+| -%>
+
+protocol bgp <%= $name %> {
+  local <%= $update_source %> as <%= $local_as %>
+  neighbor <%= $remote_ip %> <%= remote_port %> <%= $remote_as %>
+}
