@@ -1,0 +1,4 @@
+---
+bird::package_ensure: present
+bird::service_ensure: running
+bird::config_path: /etc/bird.conf
