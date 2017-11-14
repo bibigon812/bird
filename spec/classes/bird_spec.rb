@@ -6,6 +6,16 @@ describe 'bird' do
       let(:facts) { os_facts }
 
       it { is_expected.to compile }
+
+      it {
+        is_expected.to contain_service('bird') \
+          .with_enable(true)
+      }
+
+      it {
+        is_expected.to contain_file('/etc/bird.conf') \
+          .with_content(/^$/)
+      }
     end
   end
 end
