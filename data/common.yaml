@@ -1,4 +1,11 @@
 ---
+lookup_options:
+  bird::protocols::bgp:
+    merge:
+      strategy: deep
 bird::package_ensure: present
 bird::service_ensure: running
-bird::config_path: /etc/bird.conf
+bird::conf_path: /etc/bird.conf
+bird::confd_path: /etc/bird.d
+bird::router_id: "%{::facts.networking.ip}"
+bird::protocols::bgp: {}
