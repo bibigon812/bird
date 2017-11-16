@@ -13,8 +13,9 @@ class bird::protocols (
 
   $bgp.each |String[1] $bgp_name, Hash $bgp_params| {
     bird::bgp { $bgp_name:
-      type => 'protocol',
-      *    => $bgp_params,
+      conf_path => $bird::conf_path,
+      type      => 'protocol',
+      *         => $bgp_params,
     }
   }
 }

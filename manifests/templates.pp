@@ -13,8 +13,9 @@ class bird::templates (
 
   $bgp.each |String[1] $bgp_name, Hash $bgp_params| {
     bird::bgp { $bgp_name:
-      type => 'template',
-      *    => $bgp_params,
+      conf_path => $bird::conf_path,
+      type      => 'template',
+      *         => $bgp_params,
     }
   }
 }
