@@ -1,17 +1,200 @@
 <%- |
   String[1] $name,
-  Integer[1] $local_as,
-  Stdlib::Compat::Ipv4 $remote_ip,
-  Optional[Integer[1]] $remote_as,
-  Optional[Integer[1, 65535]] $remote_port,
   Enum['protocol', 'template'] $type,
-  Optional[Stdlib::Compat::Ipv4] $update_source,
+
+  Optional[Integer[1]] $local_as,
+
+  Optional[Enum['off', 'on', 'rx', 'tx']] $add_paths = undef,
+  Optional[Enum['off', 'on']] $advertise_ipv4 = undef,
+  Optional[Integer[0,100]] $allow_local_as = undef,
+  Optional[Enum['off', 'on']] $as4 = undef,
+  Optional[Enum['off', 'on']] $bfd = undef,
+  Optional[Enum['off', 'on']] $capabilities = undef,
+  Optional[Enum['off', 'on']] $check_link = undef,
+  Optional[Integer[1]] $connect_delay_time = undef,
+  Optional[Integer[1]] $connect_retry_time = undef,
+  Optional[Integer[0]] $default_bgp_local_pref = undef,
+  Optional[Integer[0]] $default_bgp_med = undef,
+  Optional[Enum['off', 'on']] $deterministic_med = undef,
+  Optional[Boolean] $direct = undef,
+  Optional[Enum['off', 'on']] $disable_after_error = undef,
+  Optional[Integer[1]] $error_forget_time = undef,
+  Optional[Pattern[/\A\d+,\s*\d+\Z/]] $error_wait_taime = undef,
+  Optional[Enum['off', 'on']] $extended_messages = undef,
+  Optional[Enum['direct', 'recursive']] $gateway = undef,
+  Optional[Enum['off', 'on', 'aware']] $graceful_restart = undef,
+  Optional[Integer[0,1000]] $graceful_restart_time = undef,
+  Optional[Integer[1]] $hold_time = undef,
+  Optional[Enum['off', 'on']] $igp_metric = undef,
+  Optional[Enum['off', 'on']] $interpret_communities = undef,
+  Optional[Integer[1]] $keepalive_time = undef,
+  Optional[Enum['off', 'on']] $med_metric = undef,
+  Optional[Variant[Boolean, Integer[1]]] $multihop = undef,
+  Optional[Boolean] $next_hop_self = undef,
+  Optional[Boolean] $next_hop_keep = undef,
+  Optional[Enum['off', 'on']] $passive = undef,
+  Optional[String[1]] $password = undef,
+  Optional[Enum['off', 'on']] $path_metric = undef,
+  Optional[Enum['off', 'on']] $prefer_older = undef,
+  Optional[Integer[1]] $remote_as = undef,
+  Optional[Stdlib::Compat::Ipv4] $remote_ip = undef,
+  Optional[Integer[1, 65535]] $remote_port = undef,
+  Optional[Integer[1]] $route_limit = undef,
+  Optional[Enum['off', 'on']] $route_refresh = undef,
+  Optional[Boolean] $rr_client = undef,
+  Optional[Stdlib::Compat::Ipv4] $rr_cluster_id = undef,
+  Optional[Boolean] $rs_client = undef,
+  Optional[Enum['off', 'on']] $secondary = undef,
+  Optional[Enum['off', 'on']] $setkey = undef,
+  Optional[Stdlib::Compat::Ipv4] $source_ip = undef,
+  Optional[Integer[1]] $startup_hold_time = undef,
+  Optional[Enum['off', 'on']] $ttl_security = undef,
 | -%>
-#
-# Managed by Puppet in the <%= $::environment %> environment
-#
 
 <%= $type %> bgp <%= $name %> {
-  local <%= $update_source %> as <%= $local_as %>
-  neighbor <%= $remote_ip %> <%= remote_port %> <%= $remote_as %>
+  <%- unless ($local_as == undef) { -%>
+    local as <%= $local_as %>
+  <%- } -%>
+  <%- unless ($remote_as == undef) { -%>
+    neighbor as <%= $remote_as %>
+  <%- } -%>
+  <%- unless ($remote_ip == undef) { -%>
+    neighbor <%= $remote_ip %>
+  <%- } -%>
+  <%- unless ($remote_port == undef) { -%>
+    neighbor port <%= $remote_port %>
+  <%- } -%>
+  <%- unless ($source_ip == undef) { -%>
+    source address <%= $source_ip %>
+  <%- } -%>
+  <%- if ($direct) { -%>
+    direct
+  <%- } -%>
+  <%- unless ($multihop == undef) { -%>
+    <%- case $multihop { -%>
+      <%- Boolean: { -%>
+    multihop
+      <%- } -%>
+      <%- default: { -%>
+    multihop <%= $multihop %>
+      <%- } -%>
+    <%- } -%>
+  <%- } -%>
+  <%- if ($next_hop_self) { -%>
+    next hop self
+  <%- } -%>
+  <%- if ($next_hop_keep) { -%>
+    next hop keep
+  <%- } -%>
+  <%- unless ($gateway) { -%>
+    gateway <%= $gateway %>
+  <%- } -%>
+  <%- unless ($check_link == undef) { -%>
+    check link <%= $check_link %>
+  <%- } -%>
+  <%- unless ($bfd == undef) { -%>
+    bfd <%= $bfd %>
+  <%- } -%>
+  <%- unless ($ttl_security == undef) { -%>
+    ttl security <%= $ttl_security %>
+  <%- } -%>
+  <%- unless ($password == undef) { -%>
+    password <%= $password %>
+  <%- } -%>
+  <%- unless ($setkey == undef) { -%>
+    setkey <%= $setkey %>
+  <%- } -%>
+  <%- unless ($passive == undef) { -%>
+    passive <%= $passive %>
+  <%- } -%>
+  <%- if ($rr_client) { -%>
+    rr client
+  <%- } -%>
+  <%- unless ($rr_cluster_id == undef) { -%>
+    rr cluster id <%= $rr_cluster_id %>
+  <%- } -%>
+  <%- if ($rs_client) { -%>
+    rs client
+  <%- } -%>
+  <%- unless ($secondary == undef) { -%>
+    secondary <%= $secondary %>
+  <%- } -%>
+  <%- unless ($add_paths == undef) { -%>
+    add paths <%= $add_paths %>
+  <%- } -%>
+  <%- unless ($allow_local_as == undef) { -%>
+    allow local as <%= $allow_local_as %>
+  <%- } -%>
+  <%- unless ($route_refresh == undef) { -%>
+    enable route refresh <%= $route_refresh %>
+  <%- } -%>
+  <%- unless ($graceful_restart == undef) { -%>
+    graceful restart <%= $graceful_restart %>
+  <%- } -%>
+  <%- unless ($graceful_restart_time == undef) { -%>
+    graceful restart time <%= $graceful_restart_time %>
+  <%- } -%>
+  <%- unless ($interpret_communities == undef) { -%>
+    interpret communities <%= $interpret_communities %>
+  <%- } -%>
+  <%- unless ($as4 == undef) { -%>
+    enable as4 <%= $as4 %>
+  <%- } -%>
+  <%- unless ($extended_messages == undef) { -%>
+    enable extended messages <%= $extended_messages %>
+  <%- } -%>
+  <%- unless ($capabilities == undef) { -%>
+    capabilities <%= $capabilities %>
+  <%- } -%>
+  <%- unless ($advertise_ipv4 == undef) { -%>
+    adverrise ipv4 <%= $advertise_ipv4 %>
+  <%- } -%>
+  <%- unless ($route_limit == undef) { -%>
+    route limit <%= $route_limit %>
+  <%- } -%>
+  <%- unless ($disable_after_error == undef) { -%>
+    disable after error <%= $disable_after_error %>
+  <%- } -%>
+  <%- unless ($hold_time == undef) { -%>
+    hold time <%= $hold_time %>
+  <%- } -%>
+  <%- unless ($startup_hold_time == undef) { -%>
+    startup hold time <%= $startup_hold_time %>
+  <%- } -%>
+  <%- unless ($keepalive_time == undef) { -%>
+    keepalive time <%= $keepalive_time %>
+  <%- } -%>
+  <%- unless ($connect_delay_time == undef) { -%>
+    connect delay time <%= $connect_delay_time %>
+  <%- } -%>
+  <%- unless ($connect_retry_time == undef) { -%>
+    connect retry time <%= $connect_retry_time %>
+  <%- } -%>
+  <%- unless ($error_wait_taime == undef) { -%>
+    error wait time <%= $error_wait_taime %>
+  <%- } -%>
+  <%- unless ($error_forget_time == undef) { -%>
+    error forget time <%= $error_forget_time %>
+  <%- } -%>
+  <%- unless ($path_metric == undef) { -%>
+    path metric <%= $path_metric %>
+  <%- } -%>
+  <%- unless ($med_metric == undef) { -%>
+    med metric <%= $med_metric %>
+  <%- } -%>
+  <%- unless ($deterministic_med == undef) { -%>
+    deterministic med <%= $deterministic_med %>
+  <%- } -%>
+  <%- unless ($igp_metric == undef) { -%>
+    igp metric <%= $igp_metric %>
+  <%- } -%>
+  <%- unless ($prefer_older == undef) { -%>
+    prefer older <%= $prefer_older %>
+  <%- } -%>
+  <%- unless ($default_bgp_med == undef) { -%>
+    default bgp_med <%= $default_bgp_med %>
+  <%- } -%>
+  <%- unless ($default_bgp_local_pref == undef) { -%>
+    default bgp_local_pref <%= default_bgp_local_pref %>
+  <%- } -%>
 }

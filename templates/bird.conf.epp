@@ -1,5 +1,4 @@
 <%- |
-  Stdlib::Absolutepath $confd_path,
   Stdlib::Compat::Ipv4 $router_id,
 | -%>
 #
@@ -7,5 +6,3 @@
 #
 
 router id <%= $router_id %>
-
-include <%= $confd_path %>/protocol_*.conf
