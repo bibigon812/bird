@@ -10,14 +10,12 @@
 # @param package_ensure The package ensure value
 # @param service_enusre The service ensure value
 # @param conf_path Specifies the configureation file
-# @param confd_path Specifies the directiry for partial configuration falies
 # @param router_id The global router id
 #
 class bird (
   String[1] $package_ensure,
   Enum['running', 'stopped'] $service_ensure,
   Stdlib::Absolutepath $conf_path,
-  Stdlib::Absolutepath $confd_path,
   Stdlib::Compat::Ipv4 $router_id,
 ) {
 
@@ -35,22 +33,23 @@ class bird (
       hasrestart => true,
       subscribe  => [
         Package['bird'],
-        File[$conf_path],
+        Concat[$conf_path],
       ],
     }
   })
 
-  file { $confd_path:
-    ensure  => directory,
-    require => Package['bird'],
+  concat { $conf_path:
+    ensure  => present,
+    require => [
+      Package['bird'],
+    ],
   }
 
-  file { $conf_path:
-    ensure  => present,
+  concat::fragment { 'bird-conf-10-global':
+    target  => $conf_path,
     content => epp('bird/bird.conf.epp', {
-      confd_path => $confd_path,
       router_id  => $router_id,
     }),
-    require => Package['bird'],
+    order   => 10,
   }
 }
