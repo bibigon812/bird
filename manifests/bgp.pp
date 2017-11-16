@@ -375,8 +375,8 @@ define bird::bgp (
 
   Enum['protocol', 'template'] $type = 'protocol',
 
-  Optional[String[1]] $export = undef,
-  Optional[String[1]] $import = undef,
+  String[1] $export = 'none',
+  String[1] $import = 'all',
 
   Optional[Variant[Boolean, Enum['rx', 'tx']]] $add_paths = undef,
   Optional[Boolean] $advertise_ipv4 = undef,
