@@ -11,11 +11,6 @@ describe 'bird' do
         is_expected.to contain_service('bird') \
           .with_enable(true)
       }
-
-      it {
-        is_expected.to contain_file('/etc/bird.conf') \
-          .with_content(/^$/)
-      }
     end
   end
 end
