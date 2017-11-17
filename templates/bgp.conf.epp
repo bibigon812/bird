@@ -20,12 +20,14 @@
   Optional[Enum['off', 'on']] $disable_after_error = undef,
   Optional[Integer[1]] $error_forget_time = undef,
   Optional[Pattern[/\A\d+,\s*\d+\Z/]] $error_wait_taime = undef,
+  Optional[String[1]] $export_filter = undef,
   Optional[Enum['off', 'on']] $extended_messages = undef,
   Optional[Enum['direct', 'recursive']] $gateway = undef,
   Optional[Enum['off', 'on', 'aware']] $graceful_restart = undef,
   Optional[Integer[0,1000]] $graceful_restart_time = undef,
   Optional[Integer[1]] $hold_time = undef,
   Optional[Enum['off', 'on']] $igp_metric = undef,
+  Optional[String[1]] $import_filter = undef,
   Optional[Enum['off', 'on']] $interpret_communities = undef,
   Optional[Integer[1]] $keepalive_time = undef,
   Optional[Enum['off', 'on']] $med_metric = undef,
@@ -86,7 +88,7 @@
   <%- if ($next_hop_keep) { -%>
     next hop keep
   <%- } -%>
-  <%- unless ($gateway) { -%>
+  <%- unless ($gateway == undef) { -%>
     gateway <%= $gateway %>
   <%- } -%>
   <%- unless ($check_link == undef) { -%>
@@ -196,5 +198,12 @@
   <%- } -%>
   <%- unless ($default_bgp_local_pref == undef) { -%>
     default bgp_local_pref <%= default_bgp_local_pref %>
+  <%- } -%>
+
+  <%- unless ($export_filter == undef) { -%>
+    export <%= $export_filter %>
+  <%- } -%>
+  <%- unless ($import_filter == undef) { -%>
+    import <%= $import_filter %>
   <%- } -%>
 }
