@@ -7,10 +7,24 @@
 # @example
 #   include bird
 #
-# @param package_ensure The package ensure value
-# @param service_enusre The service ensure value
-# @param conf_path Specifies the configureation file
-# @param router_id The global router id
+# @param
+#   package_ensure
+#     The package ensure value
+#
+# @param
+#   service_enusre
+#     The service ensure value
+#
+# @param
+#   conf_path
+#     Specifies the configureation file. Default: '/etc/bird.conf'
+#
+# @param
+#   router_id
+#     Set BIRD's router ID. It's a world-wide unique identification of your
+#     router, usually one of router's IPv4 addresses. Default: in IPv4 version,
+#     the lowest IP address of a non-loopback interface. In IPv6 version, this
+#     option is mandatory.
 #
 class bird (
   String[1] $package_ensure,
@@ -45,7 +59,7 @@ class bird (
     ],
   }
 
-  concat::fragment { 'bird-conf-10-global':
+  concat::fragment { 'bird_conf_10_global':
     target  => $conf_path,
     content => epp('bird/bird.conf.epp', {
       router_id  => $router_id,
