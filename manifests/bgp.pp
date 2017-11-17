@@ -135,6 +135,12 @@
 #     60, 300.
 #
 # @param
+#   export_filter
+#     Specify a filter to be used for filtering routes coming from the routing
+#     table to the protocol. all is shorthand for where true and none is
+#     shorthand for where false. Default: 'none'.
+#
+# @param
 #   extended_messages
 #     The BGP protocol uses maximum message length of 4096 bytes. This option
 #     provides an extension to allow extended messages with length up to 65535
@@ -189,6 +195,12 @@
 #   igp_metric
 #     Enable comparison of internal distances to boundary routers during best
 #     route selection. Default: true.
+#
+# @param
+#   import_filter
+#     Specify a filter to be used for filtering routes coming from the protocol
+#     to the routing table. all is shorthand for where true and none is
+#     shorthand for where false. Default: 'all'.
 #
 # @param
 #   interpret_communities
@@ -375,8 +387,8 @@ define bird::bgp (
 
   Enum['protocol', 'template'] $type = 'protocol',
 
-  String[1] $export = 'none',
-  String[1] $import = 'all',
+  String[1] $export_filter = 'none',
+  String[1] $import_filter = 'all',
 
   Optional[Variant[Boolean, Enum['rx', 'tx']]] $add_paths = undef,
   Optional[Boolean] $advertise_ipv4 = undef,
@@ -562,6 +574,7 @@ define bird::bgp (
       deterministic_med      => $deterministic_med_,
       direct                 => $direct,
       disable_after_error    => $disable_after_error_,
+      export_filter          => $export_filter,
       error_forget_time      => $error_forget_time,
       error_wait_time        => $error_wait_time,
       extended_messages      => $extended_messages_,
@@ -570,6 +583,7 @@ define bird::bgp (
       graceful_restart_time  => $graceful_restart_time,
       hold_time              => $hold_time,
       igp_metric             => $igp_metric_,
+      import_filter          => $import_filter,
       interpret_communities  => $interpret_communities_,
       keepalive_time         => $keepalive_time,
       local_as               => $local_as,
