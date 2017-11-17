@@ -438,7 +438,9 @@ define bird::bgp (
   Optional[Boolean] $ttl_security = undef,
 ) {
 
-  require bird
+  unless defined(Concat[$conf_path]) {
+    fail("You must include the 'bird' base class before using any bird::bgp defined types.")
+  }
 
   if ($type == 'protocol' and undef in [$local_as, $remote_ip]) {
     fail("You must specify a 'local_as' and 'remote_ip'.")
