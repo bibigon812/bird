@@ -66,4 +66,7 @@ class bird (
     }),
     order   => 10,
   }
+
+  contain bird::templates
+  contain bird::protocols
 }
