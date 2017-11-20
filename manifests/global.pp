@@ -73,7 +73,4 @@ class bird::global (
     }),
     order   => 10,
   }
-
-  contain bird::templates
-  contain bird::protocols
 }
