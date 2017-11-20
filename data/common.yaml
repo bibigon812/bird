@@ -6,6 +6,7 @@ lookup_options:
 bird::package_ensure: present
 bird::service_ensure: running
 bird::conf_path: /etc/bird.conf
+bird::global::listen_bgp: {}
 bird::global::router_id: "%{::facts.networking.ip}"
 bird::global::router_id_from:
 bird::protocols::bgp: {}

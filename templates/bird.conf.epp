@@ -1,8 +1,15 @@
 <%- |
-  Stdlib::Compat::Ipv4 $router_id,
+  Optional[String] $listen_bgp,
+  Optional[Stdlib::Compat::Ipv4] $router_id,
+  Optional[String[1]] $router_id_from,
 | -%>
 #
 # Managed by Puppet in the <%= $::environment %> environment
 #
 
+<%- unless $router_id == undef { -%>
 router id <%= $router_id %>
+<%- } -%>
+<%- unless empty($listen_bgp) { -%>
+listen bgp <%= $listen_bgp %>
+<%- } -%>
