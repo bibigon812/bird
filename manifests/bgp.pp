@@ -74,7 +74,7 @@
 #
 # @param
 #   conf_path
-#     Specifies the configuration file. Default: '/etc/bird.conf'
+#     Specifies the configuration file.
 #
 # @param
 #   connect_retry_time
