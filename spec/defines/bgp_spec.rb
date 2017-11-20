@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe 'bird::bgp' do
+  let(:pre_condition) { 'include bird' }
   let(:title) { 'namevar' }
   let(:params) do
     {
@@ -10,7 +11,7 @@ describe 'bird::bgp' do
     }
   end
 
-  let(:pre_condition) { 'include bird' }
+
 
   on_supported_os(facterversion: '2.4').each do |os, os_facts|
     context "on #{os}" do
