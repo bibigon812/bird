@@ -1,0 +1,14 @@
+<%- |
+  String $name,
+  String $body,
+  Array $defines,
+  Array $variables,
+| -%>
+filter <%= $name %>
+<%- $defines.each |Hash $define| { -%>
+define <%= $define['name'] %> = <%= $define['value'] %>;
+<%- } -%>
+<%- $variables.each |Hash $variable| { -%>
+<%= $variable['type'] %> <%= $variable['name'] %> = <%= $variable['value'] %>;
+<%- } -%>
+<%= $body %>
