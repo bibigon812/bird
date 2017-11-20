@@ -31,7 +31,13 @@
 #     accept IPv6 routes only). Such behavior was default in older versions of
 #     BIRD.
 #
-
+# @param
+#   tables
+#     Create a new routing table. The default routing table is created
+#     implicitly, other routing tables have to be added by this command. Option
+#     sorted can be used to enable sorting of routes, see sorted table
+#     description for details.
+#
 class bird::global (
   Struct[{
     Optional[address] => Stdlib::Compat::Ipv4,
@@ -40,6 +46,7 @@ class bird::global (
   }] $listen_bgp,
   Stdlib::Compat::Ipv4 $router_id,
   Optional[String[1]] $router_id_from,
+  Array[Pattern[/\A\w+(?:\ssorted)?\Z/]] $tables,
 ) {
 
   $listen_bgp_ = $listen_bgp.reduce('') |String $memo, $value| {
@@ -62,10 +69,10 @@ class bird::global (
       listen_bgp     => $listen_bgp_,
       router_id      => $router_id,
       router_id_from => $router_id_from,
+      tables         => $tables,
     }),
     order   => 10,
   }
-
 
   contain bird::templates
   contain bird::protocols

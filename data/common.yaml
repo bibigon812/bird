@@ -9,5 +9,6 @@ bird::conf_path: /etc/bird.conf
 bird::global::listen_bgp: {}
 bird::global::router_id: "%{::facts.networking.ip}"
 bird::global::router_id_from:
+bird::global::tables: []
 bird::protocols::bgp: {}
 bird::templates::bgp: {}

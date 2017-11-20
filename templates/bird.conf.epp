@@ -2,6 +2,7 @@
   Optional[String] $listen_bgp,
   Optional[Stdlib::Compat::Ipv4] $router_id,
   Optional[String[1]] $router_id_from,
+  Array[Pattern[/\A\w+(?:\ssorted)?\Z/]] $tables,
 | -%>
 #
 # Managed by Puppet in the <%= $::environment %> environment
@@ -12,4 +13,7 @@ router id <%= $router_id %>
 <%- } -%>
 <%- unless empty($listen_bgp) { -%>
 listen bgp <%= $listen_bgp %>
+<%- } -%>
+<%- $tables.each |String $table| { -%>
+table <%= $table %>
 <%- } -%>
