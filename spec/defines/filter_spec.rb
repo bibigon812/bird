@@ -2,8 +2,10 @@ require 'spec_helper'
 
 describe 'bird::filter' do
   let(:pre_condition) { 'include bird' }
+
   let(:title) { 'namevar' }
-  let(:body) {
+
+  let(:body) do
     <<-BODY
 {
   if defined(rip_metric) then
@@ -17,12 +19,20 @@ describe 'bird::filter' do
   else
     accept "OK";
 }
-    BODY
-  }
+BODY
+  end
+
   let(:params) do
     {
-      conf_path: '/etc/bird.conf',
-      body:      body,
+      'conf_path' => '/etc/bird.conf',
+      'body'      => body,
+      'defines'   => {
+        'am' => '[= 65000 65000 =]',
+      },
+      'variables' => {
+        'ps'   => 'pair set',
+        'odds' => 'int set',
+      },
     }
   end
 
@@ -32,10 +42,14 @@ describe 'bird::filter' do
 
       it { is_expected.to compile }
 
-      it {
+      it do
         is_expected.to contain_concat__fragment('bird_conf_20_filter_namevar')
           .with_content(<<-EOS
+
 filter namevar
+define am = [= 65000 65000 =];
+pair set ps;
+int set odds;
 {
   if defined(rip_metric) then
     var = rip_metric;
@@ -50,7 +64,7 @@ filter namevar
 }
 EOS
           )
-      }
+      end
     end
   end
 end
