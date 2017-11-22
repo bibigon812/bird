@@ -2,7 +2,9 @@ require 'spec_helper'
 
 describe 'bird::bgp' do
   let(:pre_condition) { 'include bird' }
+
   let(:title) { 'namevar' }
+
   let(:params) do
     {
       'conf_path' => '/etc/bird.conf',
@@ -10,8 +12,6 @@ describe 'bird::bgp' do
       'remote_ip' => '10.0.0.2',
     }
   end
-
-
 
   on_supported_os(facterversion: '2.4').each do |os, os_facts|
     context "on #{os}" do
