@@ -1,14 +1,21 @@
 <%- |
   String $name,
   String $body,
-  Array $defines,
-  Array $variables,
+  Hash[
+    String[1],
+    Variant[Integer, String[1]]
+  ] $defines,
+  Hash[
+    String[1],
+    Pattern[/\A(?:int|pair|quad|ip|prefix|ec|lc|enum)(?:\sset)?\Z/]
+  ] $variables,
 | -%>
+
 filter <%= $name %>
-<%- $defines.each |Hash $define| { -%>
-define <%= $define['name'] %> = <%= $define['value'] %>;
+<%- $defines.each |String[1] $define_name, $define_value| { -%>
+define <%= $define_name %> = <%= $define_value %>;
 <%- } -%>
-<%- $variables.each |Hash $variable| { -%>
-<%= $variable['type'] %> <%= $variable['name'] %> = <%= $variable['value'] %>;
+<%- $variables.each |String[1] $variable_name, $variable_type| { -%>
+<%= $variable_type %> <%= $variable_name %>;
 <%- } -%>
 <%= $body %>
